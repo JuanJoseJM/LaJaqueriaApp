@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                     val token = response.body()?.accesscode
                     Toast.makeText(this@LoginActivity, "Login exitoso", Toast.LENGTH_SHORT).show()
                     Log.d("TOKEN", "Token: $token")
-                    // Aquí puedes guardar el token en SharedPreferences si lo deseas
+                    // Aquí puedes guardar el token en SharedPreferences
                 } else {
                     Toast.makeText(this@LoginActivity, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
                 }
