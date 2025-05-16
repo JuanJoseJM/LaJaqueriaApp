@@ -10,8 +10,8 @@ interface SocioApi {
     suspend fun getAllSocios(): List<Socio>
 
     // Obtener un socio por su ID
-    @GET("socios/{id}")
-    suspend fun getSocioById(@Path("id") id: Long): Socio?
+    @GET("/socios/{id}")
+    suspend fun getSocioById(@Path("id") id: Long): Socio
 
     // Crear un nuevo socio
     @POST("socios")

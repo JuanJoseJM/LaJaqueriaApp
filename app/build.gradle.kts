@@ -42,30 +42,31 @@ android {
 }
 
 dependencies {
-    // Dependencias esenciales para AndroidX y el trabajo con la UI
+// Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+// Conversión de JSON con Gson
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+// Interceptor para ver logs de peticiones HTTP
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+
+// (Opcional) Corrutinas para llamadas asíncronas más limpias
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+// Kotlinx Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+// (Opcional) Lifecycle ViewModel para separar lógica
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation(libs.androidx.appcompat)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-
-    // Dependencia de Gson para la serialización y deserialización
-    implementation("com.google.code.gson:gson:2.8.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0") // Dependencia de Serialization
-
-    // Implementación de Retrofit para manejar las peticiones HTTP
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // Corrutinas de Kotlin para manejar operaciones asíncronas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-
-    // ViewModel y LiveData para la arquitectura MVVM
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-
-
-    // Librerías de pruebas
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

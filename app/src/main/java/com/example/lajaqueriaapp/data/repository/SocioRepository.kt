@@ -10,3 +10,4 @@ interface SocioRepository {
     suspend fun updateSocio(socio: Socio): Socio
     suspend fun deleteSocio(id: Long)
 }
+
