@@ -8,7 +8,5 @@ data class Socio(
     val nombre: String,
     val apellidos: String,
     val email: String,
-    val telefono: String,
-    val fechaNacimiento: String,
-    val esAdministrador: Boolean // Indica si el socio es admin o no
+    val rol: String // "admin" o "socio"
 )

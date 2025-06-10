@@ -1,13 +1,24 @@
 package com.example.lajaqueriaapp.network
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.lajaqueriaapp.data.model.*
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
-object ApiService {
-    private const val BASE_URL = "https://api.lajaqueria.com/"
+interface ApiService {
 
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    @GET("/usuarios/me")
+    suspend fun obtenerPerfil(): Socio
+
+    @GET("/cuotas")
+    suspend fun obtenerCuotas(): List<Cuota>
+
+    @GET("/eventos")
+    suspend fun obtenerEventos(): List<Evento>
+
+    @POST("/eventos/{id}/asistir")
+    suspend fun inscribirse(@Path("id") eventoId: Long)
+
+    @POST("/api/domotica/{accion}")
+    suspend fun controlarDomotica(@Path("accion") accion: String): DomoticaResponse
 }

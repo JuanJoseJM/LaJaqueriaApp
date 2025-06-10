@@ -13,7 +13,7 @@ object ApiClient {
 
     private const val BASE_URL = "http://10.0.2.2:8080"
 
-    private val logging = HttpLoggingInterceptor().apply {
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
@@ -31,10 +31,9 @@ object ApiClient {
         chain.proceed(builder.build())
     }
 
-
     private val client = OkHttpClient.Builder()
         .addInterceptor(authInterceptor)
-        .addInterceptor(logging)
+        .addInterceptor(loggingInterceptor)
         .build()
 
     val retrofit: Retrofit = Retrofit.Builder()
@@ -42,4 +41,6 @@ object ApiClient {
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    val apiService: ApiService = retrofit.create(ApiService::class.java)
 }

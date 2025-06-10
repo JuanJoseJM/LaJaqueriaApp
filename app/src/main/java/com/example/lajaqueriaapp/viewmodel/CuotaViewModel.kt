@@ -4,25 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lajaqueriaapp.data.model.Socio
+import com.example.lajaqueriaapp.data.model.Cuota
 import com.example.lajaqueriaapp.network.ApiClient
 import kotlinx.coroutines.launch
 
-class SocioViewModel : ViewModel() {
+class CuotaViewModel : ViewModel() {
 
-    private val _socio = MutableLiveData<Socio>()
-    val socio: LiveData<Socio> = _socio
+    private val _cuotas = MutableLiveData<List<Cuota>>()
+    val cuotas: LiveData<List<Cuota>> = _cuotas
 
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    fun cargarSocio() {
+    fun cargarCuotas() {
         viewModelScope.launch {
             try {
-                val response = ApiClient.apiService.obtenerPerfil()
-                _socio.postValue(response)
+                val response = ApiClient.apiService.obtenerCuotas()
+                _cuotas.postValue(response)
             } catch (e: Exception) {
-                _error.postValue("Error al cargar el perfil.")
+                _error.postValue("No se pudieron cargar las cuotas.")
             }
         }
     }

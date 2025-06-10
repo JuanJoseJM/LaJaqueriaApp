@@ -1,27 +1,24 @@
 package com.example.lajaqueriaapp.ui.auth
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.view.View
+import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
 import com.example.lajaqueriaapp.R
-import com.example.lajaqueriaapp.data.model.LoginRequest
-import com.example.lajaqueriaapp.network.ApiClient
-import com.example.lajaqueriaapp.network.AuthApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.lajaqueriaapp.ui.home.HomeActivity
+import com.example.lajaqueriaapp.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var loginButton: Button
-    private lateinit var api: AuthApi
+    private lateinit var progressBar: ProgressBar
+
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,46 +27,34 @@ class LoginActivity : AppCompatActivity() {
         emailInput = findViewById(R.id.editTextEmail)
         passwordInput = findViewById(R.id.editTextPassword)
         loginButton = findViewById(R.id.buttonLogin)
-
-        api = ApiClient.retrofit.create(AuthApi::class.java)
+        progressBar = findViewById(R.id.progressBar)
 
         loginButton.setOnClickListener {
-            val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
+            val email = emailInput.text.toString().trim()
+            val password = passwordInput.text.toString().trim()
 
-            if (email.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.login(email, password)
             }
-
-            login(email, password)
         }
-    }
 
-    private fun login(email: String, password: String) {
-        val request = LoginRequest(email, password)
+        viewModel.loading.observe(this) {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        }
 
-        lifecycleScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    api.login(request)
-                }
+        viewModel.loginSuccess.observe(this) {
+            if (it) {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }
+        }
 
-                if (response.isSuccessful) {
-                    val token = response.body()?.accesscode ?: ""
-
-                    val prefs = getSharedPreferences("lajaqueria_prefs", Context.MODE_PRIVATE)
-                    prefs.edit().putString("access_token", token).apply()
-
-                    Toast.makeText(this@LoginActivity, "Login exitoso", Toast.LENGTH_SHORT).show()
-                    Log.d("LOGIN", "Token: $token")
-                } else {
-                    Toast.makeText(this@LoginActivity, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
-                }
-
-            } catch (e: Exception) {
-                Toast.makeText(this@LoginActivity, "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
-                Log.e("LOGIN", "Excepción: ${e.message}")
+        viewModel.error.observe(this) {
+            it?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearError()
             }
         }
     }
