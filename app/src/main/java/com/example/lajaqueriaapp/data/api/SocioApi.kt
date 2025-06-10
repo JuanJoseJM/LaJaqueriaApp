@@ -21,6 +21,9 @@ interface SocioApi {
     @PUT("socios/{id}")
     suspend fun updateSocio(@Path("id") id: Long, @Body socio: Socio): Socio
 
+    // inicial para uniformidad
+    @POST("/socios")
+
     // Eliminar un socio
     @DELETE("socios/{id}")
     suspend fun deleteSocio(@Path("id") id: Long)

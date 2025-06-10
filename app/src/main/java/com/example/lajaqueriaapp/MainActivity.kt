@@ -1,21 +1,26 @@
 package com.example.lajaqueriaapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.lajaqueriaapp.ui.auth.LoginActivity
+import com.example.lajaqueriaapp.ui.home.HomeActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContentView(R.layout.activity_home)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        val prefs = getSharedPreferences("lajaqueria_prefs", MODE_PRIVATE)
+        val token = prefs.getString("access_token", null)
+
+        // Redirigir según presencia del token
+        val intent = if (token != null) {
+            Intent(this, HomeActivity::class.java)
+        } else {
+            Intent(this, LoginActivity::class.java)
         }
+
+        startActivity(intent)
+        finish() // Evita volver a esta pantalla
     }
 }

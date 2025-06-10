@@ -8,10 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lajaqueriaapp.R
 import com.example.lajaqueriaapp.data.model.Cuota
 
+/**
+ * Adaptador para mostrar la lista de cuotas en un RecyclerView.
+ */
 class CuotaAdapter : RecyclerView.Adapter<CuotaAdapter.CuotaViewHolder>() {
 
     private var listaCuotas: List<Cuota> = emptyList()
 
+    /**
+     * Actualiza la lista de cuotas y notifica cambios.
+     */
     fun submitList(nuevaLista: List<Cuota>) {
         listaCuotas = nuevaLista
         notifyDataSetChanged()
@@ -30,6 +36,9 @@ class CuotaAdapter : RecyclerView.Adapter<CuotaAdapter.CuotaViewHolder>() {
 
     override fun getItemCount(): Int = listaCuotas.size
 
+    /**
+     * ViewHolder para los ítems de cuota.
+     */
     class CuotaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvFecha: TextView = view.findViewById(R.id.tvFecha)
         val tvMonto: TextView = view.findViewById(R.id.tvMonto)

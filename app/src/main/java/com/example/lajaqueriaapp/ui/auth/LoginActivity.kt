@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.example.lajaqueriaapp.R
 import com.example.lajaqueriaapp.ui.home.HomeActivity
 import com.example.lajaqueriaapp.viewmodel.LoginViewModel

@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class Cuota(
     val id: Long,
     val socioId: Long,
-    val fechaPago: String,
+    val fecha: String,
     val monto: Double
 )

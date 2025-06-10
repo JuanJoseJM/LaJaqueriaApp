@@ -14,12 +14,13 @@
         android:text="Mis Cuotas"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCuotas"

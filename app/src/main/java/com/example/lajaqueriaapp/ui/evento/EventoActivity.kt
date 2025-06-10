@@ -5,11 +5,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lajaqueriaapp.R
 import com.example.lajaqueriaapp.ui.adapters.EventoAdapter
 import com.example.lajaqueriaapp.viewmodel.EventoViewModel
-import kotlinx.android.synthetic.main.activity_evento.*
 
+/**
+ * Actividad para mostrar la lista de eventos e inscribirse.
+ */
 class EventoActivity : AppCompatActivity() {
 
     private val viewModel: EventoViewModel by viewModels()
@@ -19,13 +22,17 @@ class EventoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evento)
 
+        val recyclerView = findViewById<RecyclerView>(R.id.rvEventos)
+
+        // Adaptador con callback para inscripción
         adapter = EventoAdapter { eventoId ->
             viewModel.inscribirse(eventoId)
         }
 
-        rvEventos.layoutManager = LinearLayoutManager(this)
-        rvEventos.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
+        // Observadores del ViewModel
         viewModel.eventos.observe(this) {
             adapter.submitList(it)
         }
@@ -38,6 +45,7 @@ class EventoActivity : AppCompatActivity() {
             if (it) Toast.makeText(this, "Inscripción exitosa", Toast.LENGTH_SHORT).show()
         }
 
+        // Cargar eventos desde la API
         viewModel.cargarEventos()
     }
 }
