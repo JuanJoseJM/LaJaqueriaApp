@@ -11,6 +11,9 @@ import com.example.lajaqueriaapp.network.ApiClient
 import com.example.lajaqueriaapp.network.AuthApi
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel para manejar la lógica de inicio de sesión.
+ */
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _loginSuccess = MutableLiveData<Boolean>()
@@ -26,6 +29,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val prefs = context.getSharedPreferences("lajaqueria_prefs", Context.MODE_PRIVATE)
     private val api = ApiClient.retrofit.create(AuthApi::class.java)
 
+    /**
+     * Ejecuta el proceso de login.
+     * @param email Correo del usuario
+     * @param password Contraseña del usuario
+     */
     fun login(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
             _error.value = "Todos los campos son obligatorios"
@@ -36,8 +44,13 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = api.login(LoginRequest(email.trim(), password.trim()))
-                prefs.edit().putString("access_token", response.token).apply()
-                _loginSuccess.postValue(true)
+                val loginResponse = response.body()
+                if (response.isSuccessful && loginResponse != null) {
+                    prefs.edit().putString("access_token", loginResponse.token).apply()
+                    _loginSuccess.postValue(true)
+                } else {
+                    _error.postValue("Error de autenticación")
+                }
             } catch (e: Exception) {
                 _error.postValue("Credenciales inválidas o error de red")
             } finally {
@@ -46,6 +59,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Limpia cualquier error actual mostrado.
+     */
     fun clearError() {
         _error.value = null
     }
