@@ -1,6 +1,6 @@
 package com.example.lajaqueriaapp.data.model
 
 data class LoginResponse(
-    val token: String,
+    val accesscode: String,
     val email: String
 )

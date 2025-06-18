@@ -46,7 +46,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 val response = api.login(LoginRequest(email.trim(), password.trim()))
                 val loginResponse = response.body()
                 if (response.isSuccessful && loginResponse != null) {
-                    prefs.edit().putString("access_token", loginResponse.token).apply()
+                    prefs.edit().putString("access_token", loginResponse.accesscode).apply()
                     _loginSuccess.postValue(true)
                 } else {
                     _error.postValue("Error de autenticación")
